@@ -1,27 +1,25 @@
-package br.com.codandosimples;
+package br.com.codandosimples.actions;
 
 import br.com.codandosimples.dao.DespesaDAO;
 import br.com.codandosimples.infra.ConnectionFactory;
 import br.com.codandosimples.model.Categoria;
 import br.com.codandosimples.model.Despesa;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-@WebServlet("/addExpense")
-public class AddExpenseServlet extends HttpServlet {
+/**
+ * @author Mateus Nascimento
+ */
+public class AddExpense implements Action {
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         String descriptionStr = request.getParameter("description");
         String dateStr = request.getParameter("date");
         String valueStr = request.getParameter("value");
@@ -36,7 +34,6 @@ public class AddExpenseServlet extends HttpServlet {
         DespesaDAO dao = new DespesaDAO(connection);
         dao.save(despesa);
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/added-expense.jsp");
-        dispatcher.forward(request, response);
+        return "/WEB-INF/added-expense.jsp";
     }
 }
